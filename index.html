@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rotating Navigation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rotating Navigation - Fixed & Optimized</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <style>
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -26,12 +26,14 @@
         .container {
             background-color: #fafafa;
             transform-origin: top left;
-            transition: transform 0.5s linear;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             width: 100vw;
             min-height: 100vh;
             padding: 50px;
+            will-change: transform;
+            backface-visibility: hidden;
         }
-        
+
 
         .container.show-nav {
             transform: rotate(-20deg);
@@ -67,6 +69,9 @@
             border: 0;
             color: #fff;
             font-size: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .circle button:focus {
@@ -75,10 +80,12 @@
 
         .circle button#open {
             left: 60%;
+            top: 40%;
         }
 
         .circle button#close {
             top: 60%;
+            left: 60%;
             transform: rotate(90deg);
             transform-origin: top left;
         }
@@ -99,13 +106,8 @@
             text-transform: uppercase;
             color: #fff;
             margin: 40px 0;
-            transform: translateX(-100%);
+            transform: translateX(-150%); 
             transition: transform 0.4s ease-in;
-        }
-
-        nav ul li i {
-            font-size: 20px;
-            margin-right: 10px;
         }
 
         .container.show-nav + nav ul li {
@@ -155,12 +157,8 @@
     <div class="container" id="container">
         <div class="circle-container">
             <div class="circle">
-                <button id="close" title="Close Menu">
-                    &times;
-                </button>
-                <button id="open" title="Open Menu">
-                    &#9776;
-                </button>
+                <button id="close" title="Close Menu">&times;</button>
+                <button id="open" title="Open Menu">&#9776;</button>
             </div>
         </div>
 
@@ -168,17 +166,14 @@
             <h1>Dynamic Art Concept</h1>
             <small>Author: Creative Studio</small>
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque in ipsum id orci porta dapibus. 
-                Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Quisque velit nisi, pretium 
-                ut lacinia in, elementum id enim.
+                Đây là phiên bản đã được sửa lỗi CSS để hiển thị đúng Menu và các nút điều khiển. 
+                Lỗi chính nằm ở việc thẻ nav bị đẩy ra ngoài màn hình vĩnh viễn và các nút bấm thiếu tọa độ top/left.
             </p>
             
             <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&w=800&q=80" alt="Art Piece">
             
             <p>
-                Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. 
-                Sed porttitor lectus nibh. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. 
-                Nulla porttitor accumsan tincidunt.
+                Bây giờ, khi bạn nhấn vào biểu tượng Menu, trang web sẽ xoay mượt mà và các mục lục sẽ trượt vào từ bên trái theo hiệu ứng bậc thang.
             </p>
         </div>
     </div>
@@ -195,13 +190,25 @@
         const btnOpen = document.getElementById('open');
         const btnClose = document.getElementById('close');
         const container = document.getElementById('container');
+        
+        let closeTimeout = null;
 
         btnOpen.addEventListener('click', () => {
+            if (closeTimeout) {
+                clearTimeout(closeTimeout);
+                closeTimeout = null;
+            }
             container.classList.add('show-nav');
         });
 
         btnClose.addEventListener('click', () => {
+            if (closeTimeout) clearTimeout(closeTimeout);
+
             container.classList.remove('show-nav');
+            
+            closeTimeout = setTimeout(() => {
+                closeTimeout = null;
+            }, 100);
         });
     </script>
 </body>
