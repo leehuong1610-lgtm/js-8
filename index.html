@@ -31,6 +31,7 @@
             min-height: 100vh;
             padding: 50px;
         }
+        
 
         .container.show-nav {
             transform: rotate(-20deg);
@@ -74,12 +75,10 @@
 
         .circle button#open {
             left: 60%;
-            top: 40%;
         }
 
         .circle button#close {
             top: 60%;
-            left: 60%;
             transform: rotate(90deg);
             transform-origin: top left;
         }
@@ -193,15 +192,15 @@
     </nav>
 
     <script>
-        const open = document.getElementById('open');
-        const close = document.getElementById('close');
+        const btnOpen = document.getElementById('open');
+        const btnClose = document.getElementById('close');
         const container = document.getElementById('container');
 
-        open.addEventListener('click', () => {
+        btnOpen.addEventListener('click', () => {
             container.classList.add('show-nav');
         });
 
-        close.addEventListener('click', () => {
+        btnClose.addEventListener('click', () => {
             container.classList.remove('show-nav');
         });
     </script>
